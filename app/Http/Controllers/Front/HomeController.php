@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Controllers\Front;
+
+use App\Product;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+
+class HomeController extends Controller
+{
+    public function index() {
+
+
+if (Auth::check()) {
+
+	$user = Auth::user();
+
+	$session_user_id = Auth::user()->id;
+	$session_user_email = Auth::user()->email;
+	$session_user_status = Auth::user()->status;
+	/*
+	echo $session_user_id;
+	echo $session_user_email;
+	echo $session_user_status;
+	*/
+
+	if($session_user_status=="Inactive") {
+        auth()->logout();
+        session()->flash('msg','Your account is Inactive. Contact admin to activate your account');
+        return redirect('/user/login');
+	}
+
+else {
+    $products = Product::inRandomOrder()->take(4)->get();
+    return view('front.index', compact('products'));
+}
+} // if (Auth::check()) {
+
+else {
+    $products = Product::inRandomOrder()->take(4)->get();
+    return view('front.index', compact('products'));
+} // else {
+
+
+
+
+
+    }
+}

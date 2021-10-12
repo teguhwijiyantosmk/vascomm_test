@@ -1,0 +1,63 @@
+@extends('admin.layouts.master')
+
+@section('page')
+    Users
+@endsection
+
+@section('content')
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Users</h4>
+                    <p class="category">List of all registered users</p>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Registered at</th>
+							<th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($users as $user)
+
+                            <tr>
+
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at->diffForHumans() }}</td>
+								<td>{{ $user->status }}</td>
+                                <td>
+
+<a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Detail</a>
+
+@if($user->status == 'Active')
+ <a class="btn btn-warning" href="{{ route('users.edit',$user->id) }}">Inactivate</a>
+@endif
+@if($user->status == 'Inactive')
+ <a class="btn btn-success" href="{{ route('users.update',$user->id) }}">Activate</a>
+@endif                               
+                                   
+                                </td>
+
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
